@@ -7,6 +7,7 @@ import { Button } from '../components/Button'
 import { useAuth } from '../contexts/AuthContext'
 import { FormEvent, useState } from 'react'
 import { database } from '../services/firebase'
+import toast, { Toaster } from 'react-hot-toast'
 
 export const Home = () => {
   const navigate = useNavigate()
@@ -29,7 +30,7 @@ export const Home = () => {
     const roomRef = await database.ref(`rooms/${roomCode}`).get()
 
     if (!roomRef.exists()) {
-      alert('Room does not exists.')
+      toast.error('A sala nao existe.')
       return
     }
 
@@ -38,8 +39,12 @@ export const Home = () => {
 
   return (
     <div id='page-auth'>
+      <Toaster />
       <aside>
-        <img src={illustrationSVG} alt='Ilustracao simbolizando perguntas e respostas' />
+        <img
+          src={illustrationSVG}
+          alt='Ilustracao simbolizando perguntas e respostas'
+        />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as duvidas da sua audiencia em tempo-real</p>
       </aside>
