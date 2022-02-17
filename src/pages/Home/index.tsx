@@ -1,12 +1,13 @@
+import illustrationSVG from '../../assets/vectors/illustration.svg'
+import logoSVG from '../../assets/vectors/logo.svg'
+import googleIconSVG from '../../assets/vectors/google-icon.svg'
+import './styles.scss'
+
 import { useNavigate } from 'react-router-dom'
-import illustrationSVG from '../assets/vectors/illustration.svg'
-import logoSVG from '../assets/vectors/logo.svg'
-import googleIconSVG from '../assets/vectors/google-icon.svg'
-import '../styles/auth.scss'
-import { Button } from '../components/Button'
-import { useAuth } from '../contexts/AuthContext'
+import { Button } from '../../components/Button'
+import { useAuth } from '../../hooks/useAuth'
 import { FormEvent, useState } from 'react'
-import { database } from '../services/firebase'
+import { database } from '../../services/firebase'
 import toast, { Toaster } from 'react-hot-toast'
 
 export const Home = () => {
@@ -41,10 +42,7 @@ export const Home = () => {
     <div id='page-auth'>
       <Toaster />
       <aside>
-        <img
-          src={illustrationSVG}
-          alt='Ilustracao simbolizando perguntas e respostas'
-        />
+        <img src={illustrationSVG} alt='Ilustracao simbolizando perguntas e respostas' />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as duvidas da sua audiencia em tempo-real</p>
       </aside>

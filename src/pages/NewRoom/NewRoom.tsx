@@ -1,11 +1,12 @@
+import illustrationSVG from '../../assets/vectors/illustration.svg'
+import logoSVG from '../../assets/vectors/logo.svg'
+import '../Home/styles.scss'
+
 import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import illustrationSVG from '../assets/vectors/illustration.svg'
-import logoSVG from '../assets/vectors/logo.svg'
-import '../styles/auth.scss'
-import { Button } from '../components/Button'
-import { database } from '../services/firebase'
-import { useAuth } from '../contexts/AuthContext'
+import { Button } from '../../components/Button'
+import { database } from '../../services/firebase'
+import { useAuth } from '../../hooks/useAuth'
 
 export const NewRoom = () => {
   const { user } = useAuth()

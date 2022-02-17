@@ -1,5 +1,5 @@
-import copySVG from '../assets/vectors/copy.svg'
-import '../styles/room-code.scss'
+import copySVG from '../../assets/vectors/copy.svg'
+import './styles.scss'
 
 type RoomCodeProps = {
   code?: string

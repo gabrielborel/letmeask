@@ -1,12 +1,14 @@
+import logoSVG from '../../assets/vectors/logo.svg'
+import './styles.scss'
+
 import { FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import logoSVG from '../assets/vectors/logo.svg'
-import { Button } from '../components/Button'
-import { RoomCode } from '../components/RoomCode'
-import { useAuth } from '../contexts/AuthContext'
-import { database } from '../services/firebase'
+import { Button } from '../../components/Button'
+import { RoomCode } from '../../components/RoomCode'
+import { useAuth } from '../../hooks/useAuth'
+import { database } from '../../services/firebase'
 import toast, { Toaster } from 'react-hot-toast'
-import '../styles/room.scss'
+import { Question } from '../../components/Question'
 
 type FirebaseQuestions = Record<
   string,
@@ -21,7 +23,7 @@ type FirebaseQuestions = Record<
   }
 >
 
-type Question = {
+type QuestionProps = {
   id: string
   author: {
     name: string
@@ -38,9 +40,8 @@ type RoomParams = {
 
 export const Room = () => {
   const [newQuestion, setNewQuestion] = useState('')
-  const [questions, setQuestions] = useState<Question[]>([])
+  const [questions, setQuestions] = useState<QuestionProps[]>([])
   const [title, setTitle] = useState('')
-
   const { user } = useAuth()
   const { id: roomId } = useParams<RoomParams>()
 
@@ -51,17 +52,15 @@ export const Room = () => {
       const databaseRoom = room.val()
       const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {}
 
-      const parsedQuestions = Object.entries(firebaseQuestions).map(
-        ([key, value]) => {
-          return {
-            id: key,
-            content: value.content,
-            author: value.author,
-            isAnswered: value.inAswered,
-            isHighlighted: value.isHighlighted,
-          }
+      const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) => {
+        return {
+          id: key,
+          content: value.content,
+          author: value.author,
+          isAnswered: value.inAswered,
+          isHighlighted: value.isHighlighted,
         }
-      )
+      })
 
       setTitle(databaseRoom.title)
       setQuestions(parsedQuestions)
@@ -89,8 +88,8 @@ export const Room = () => {
 
     await database.ref(`/rooms/${roomId}/questions`).push(question)
 
-    setNewQuestion('')
     toast.success('Pergunta enviada com sucesso.')
+    setNewQuestion('')
   }
 
   return (
@@ -132,7 +131,11 @@ export const Room = () => {
           </div>
         </form>
 
-        {JSON.stringify(questions)}
+        <div className='question-list'>
+          {questions.map(({ id, content, author }) => {
+            return <Question key={id} content={content} author={author} />
+          })}
+        </div>
       </main>
     </div>
   )
