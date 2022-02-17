@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode, useEffect } from 'react'
+import { createContext, useState, ReactNode, useEffect, useContext } from 'react'
 import { firebase, auth } from '../services/firebase'
 
 type User = {
@@ -62,5 +62,9 @@ export const AuthContextProvider = (props: AuthContextProviderProps) => {
     }
   }
 
-  return <AuthContext.Provider value={{ user, signInWithGoogle }}>{props.children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, signInWithGoogle }}>{props.children}</AuthContext.Provider>
+  )
 }
+
+export const useAuth = () => useContext(AuthContext)
