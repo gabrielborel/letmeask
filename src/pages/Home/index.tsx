@@ -35,7 +35,7 @@ export const Home = () => {
       return
     }
 
-    if (!roomRef.val().endedAt) {
+    if (roomRef.val().endedAt) {
       toast.error('A sala ja foi encerrada.')
       return
     }

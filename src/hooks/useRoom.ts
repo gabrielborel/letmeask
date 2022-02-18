@@ -11,7 +11,7 @@ type FirebaseQuestions = Record<
     }
     content: string
     isHighlighted: boolean
-    inAswered: boolean
+    isAnswered: boolean
     likes: Record<
       string,
       {
@@ -51,7 +51,7 @@ export const useRoom = (roomId: string | undefined) => {
           id: key,
           content: value.content,
           author: value.author,
-          isAnswered: value.inAswered,
+          isAnswered: value.isAnswered,
           isHighlighted: value.isHighlighted,
           likeCount: Object.values(value.likes ?? {}).length,
           likeId: Object.entries(value.likes ?? {}).find(
