@@ -5,16 +5,15 @@ import answerSVG from '../../assets/vectors/answer.svg'
 import deleteSVGModal from '../../assets/vectors/delete-modal.svg'
 import excluirSVGModal from '../../assets/vectors/excluir-modal.svg'
 import '../Room/styles.scss'
-import { useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { RoomCode } from '../../components/RoomCode'
 import { Question } from '../../components/Question'
-import { useRoom } from '../../hooks/useRoom'
 import { database } from '../../services/firebase'
-import toast, { Toaster } from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
-import Modal from 'react-modal'
+import { useRoom } from '../../hooks/useRoom'
 import { useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
+import Modal from 'react-modal'
 
 type RoomParams = {
   id: string
@@ -36,11 +35,6 @@ export const AdminRoom = () => {
     modal: '',
   })
   const [questionId, setQuestionId] = useState('')
-
-  const handleEndQuestion = (questionId: string) => {
-    setModalIsOpen({ isOpen: true, modal: 'question' })
-    setQuestionId(questionId)
-  }
 
   const handleEndRoom = async () => {
     await database.ref(`rooms/${roomId}`).update({ endedAt: new Date() })
@@ -141,7 +135,13 @@ export const AdminRoom = () => {
                     </button>
                   </>
                 )}
-                <button type='button' onClick={() => handleEndQuestion(id)}>
+                <button
+                  type='button'
+                  onClick={() => {
+                    setModalIsOpen({ isOpen: true, modal: 'question' })
+                    setQuestionId(id)
+                  }}
+                >
                   <img src={deleteSVG} alt='Remover pergunta' />
                 </button>
                 <Modal
