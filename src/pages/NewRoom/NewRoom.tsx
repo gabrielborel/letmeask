@@ -25,7 +25,7 @@ export const NewRoom = () => {
       autorhId: user?.id,
     })
 
-    navigate(`/rooms/${firebaseRoom.key}`)
+    navigate(`/admin/rooms/${firebaseRoom.key}`)
   }
 
   return (
