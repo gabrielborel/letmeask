@@ -2,26 +2,45 @@ import logoSVG from '../../assets/vectors/logo.svg'
 import deleteSVG from '../../assets/vectors/delete.svg'
 import checkSVG from '../../assets/vectors/check.svg'
 import answerSVG from '../../assets/vectors/answer.svg'
+import deleteSVGModal from '../../assets/vectors/delete-modal.svg'
+import excluirSVGModal from '../../assets/vectors/excluir-modal.svg'
 import '../Room/styles.scss'
 import { useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { RoomCode } from '../../components/RoomCode'
 import { Question } from '../../components/Question'
 import { useRoom } from '../../hooks/useRoom'
-// import { useAuth } from '../../hooks/useAuth'
 import { database } from '../../services/firebase'
 import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import Modal from 'react-modal'
+import { useState } from 'react'
 
 type RoomParams = {
   id: string
 }
 
+type ModalProps = {
+  isOpen: boolean
+  modal: string
+}
+
+Modal.setAppElement(document.getElementById('root') as HTMLElement)
+
 export const AdminRoom = () => {
   const { id: roomId } = useParams<RoomParams>()
   const { questions, title } = useRoom(roomId)
   const navigate = useNavigate()
-  // const { user } = useAuth()
+  const [modalIsOpen, setModalIsOpen] = useState<ModalProps>({
+    isOpen: false,
+    modal: '',
+  })
+  const [questionId, setQuestionId] = useState('')
+
+  const handleEndQuestion = (questionId: string) => {
+    setModalIsOpen({ isOpen: true, modal: 'question' })
+    setQuestionId(questionId)
+  }
 
   const handleEndRoom = async () => {
     await database.ref(`rooms/${roomId}`).update({ endedAt: new Date() })
@@ -29,11 +48,10 @@ export const AdminRoom = () => {
     navigate('/')
   }
 
-  const handleDeleteQuestion = async (questionId: string) => {
-    if (window.confirm('Tem certeza que deseja excluir essa pergunta?')) {
-      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove()
-      toast.success('Pergunta excluida com sucesso.')
-    }
+  const handleDeleteQuestion = async () => {
+    setModalIsOpen({ isOpen: false, modal: '' })
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).remove()
+    toast.success('Pergunta excluida com sucesso.')
   }
 
   const handleCheckQuestionAsAnswered = async (questionId: string) => {
@@ -48,6 +66,21 @@ export const AdminRoom = () => {
     })
   }
 
+  const customStyles = {
+    content: {
+      margin: `0 auto`,
+      width: '590px',
+      height: '362px',
+      top: '25%',
+      border: 'none',
+      borderRadius: '8px',
+      boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  }
+
   return (
     <div id='page-room'>
       <Toaster />
@@ -56,9 +89,28 @@ export const AdminRoom = () => {
           <img src={logoSVG} alt='Letmeask' />
           <div>
             <RoomCode code={roomId} />
-            <Button isOutlined onClick={handleEndRoom}>
+            <Button isOutlined onClick={() => setModalIsOpen({ isOpen: true, modal: 'room' })}>
               Encerrar sala
             </Button>
+            <Modal isOpen={modalIsOpen.isOpen && modalIsOpen.modal === 'room'} style={customStyles}>
+              <div className='modal-container'>
+                <img src={deleteSVGModal} alt='Icone de deletar' />
+                <h2>Encerrar sala</h2>
+                <p>Tem certeza que voce deseja encerrar esta sala ?</p>
+                <div>
+                  <Button
+                    type='button'
+                    className='button btn-cancelar'
+                    onClick={() => setModalIsOpen({ isOpen: false, modal: '' })}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button type='button' className='button btn-encerrar' onClick={handleEndRoom}>
+                    Sim, encerrar
+                  </Button>
+                </div>
+              </div>
+            </Modal>
           </div>
         </div>
       </header>
@@ -85,13 +137,39 @@ export const AdminRoom = () => {
                       <img src={checkSVG} alt='Marcar pergunta como respondida' />
                     </button>
                     <button type='button' onClick={() => handleHighlightQuestion(id)}>
-                      <img src={answerSVG} alt='Remover pergunta' />
+                      <img src={answerSVG} alt='Dar destaque a pergunta' />
                     </button>
                   </>
                 )}
-                <button type='button' onClick={() => handleDeleteQuestion(id)}>
-                  <img src={deleteSVG} alt='Dar destaque a pergunta' />
+                <button type='button' onClick={() => handleEndQuestion(id)}>
+                  <img src={deleteSVG} alt='Remover pergunta' />
                 </button>
+                <Modal
+                  isOpen={modalIsOpen.isOpen && modalIsOpen.modal === 'question'}
+                  style={customStyles}
+                >
+                  <div className='modal-container'>
+                    <img src={excluirSVGModal} alt='Icone de excluir' />
+                    <h2>Excluir pergunta</h2>
+                    <p>Tem certeza que voce deseja excluir essa pergunta ?</p>
+                    <div>
+                      <Button
+                        type='button'
+                        className='button btn-cancelar'
+                        onClick={() => setModalIsOpen({ isOpen: false, modal: '' })}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        type='button'
+                        className='button btn-encerrar'
+                        onClick={handleDeleteQuestion}
+                      >
+                        Sim, excluir
+                      </Button>
+                    </div>
+                  </div>
+                </Modal>
               </Question>
             )
           })}

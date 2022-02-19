@@ -137,3 +137,34 @@
     }
   }
 }
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Poppins', sans-serif;
+
+  img {
+    margin-bottom: 10px;
+  }
+
+  p {
+    opacity: 0.5;
+    margin-bottom: 50px;
+  }
+
+  > div {
+    display: flex;
+    gap: 8px;
+
+    .btn-cancelar {
+      background: #DBDCDD;
+      color: #737380;
+    }
+
+    .btn-encerrar {
+      background: #E73F5D;
+    }
+  }
+}

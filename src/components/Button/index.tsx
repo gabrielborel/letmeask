@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes } from 'react'
-
+import cx from 'classnames'
 import './styles.scss'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -8,7 +8,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export const Button = ({ isOutlined = false, children, ...props }: ButtonProps) => {
   return (
-    <button className={`button ${isOutlined ? 'outlined' : ''}`} {...props}>
+    <button className={cx('button', { outlined: isOutlined })} {...props}>
       {children}
     </button>
   )
