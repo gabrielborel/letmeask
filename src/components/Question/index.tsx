@@ -28,7 +28,7 @@ export const Question = ({
         { highlighted: isHighlighted && !isAnswered }
       )}
     >
-      <p>{content} aa</p>
+      <p>{content}</p>
       <footer>
         <div className='user-info'>
           <img src={author.avatar} alt={author.name} />

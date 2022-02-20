@@ -23,6 +23,7 @@
 
   p {
     color: #29292e;
+    word-break: break-word;
   }
 
   footer {
@@ -79,4 +80,8 @@
       }
     }
   }
+}
+
+@media (max-width: 880px) {
+  
 }

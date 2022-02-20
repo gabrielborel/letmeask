@@ -6,7 +6,7 @@
   border: 1px solid #835afd;
   cursor: pointer;
   display: flex;
-
+  
   div {
     background: #835afd;
     padding: 0 12px;
@@ -15,7 +15,7 @@
     align-items: center;
     height: 100%;
   }
-
+  
   span {
     display: block;
     align-self: center;
@@ -24,5 +24,6 @@
     width: 230px;
     font-size: 14px;
     font-weight: 500;
+    text-overflow: ellipsis;
   }
 }

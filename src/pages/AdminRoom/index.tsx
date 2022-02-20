@@ -2,6 +2,8 @@ import logoSVG from '../../assets/vectors/logo.svg'
 import deleteSVG from '../../assets/vectors/delete.svg'
 import checkSVG from '../../assets/vectors/check.svg'
 import answerSVG from '../../assets/vectors/answer.svg'
+import openMenuSVG from '../../assets/vectors/open-menu.svg'
+import closeMenuSVG from '../../assets/vectors/close-menu.svg'
 import deleteSVGModal from '../../assets/vectors/delete-modal.svg'
 import excluirSVGModal from '../../assets/vectors/excluir-modal.svg'
 import '../Room/styles.scss'
@@ -63,7 +65,8 @@ export const AdminRoom = () => {
   const customStyles = {
     content: {
       margin: `0 auto`,
-      width: '590px',
+      width: '80%',
+      maxWidth: '600px',
       height: '362px',
       top: '25%',
       border: 'none',
@@ -86,28 +89,62 @@ export const AdminRoom = () => {
             <Button isOutlined onClick={() => setModalIsOpen({ isOpen: true, modal: 'room' })}>
               Encerrar sala
             </Button>
-            <Modal isOpen={modalIsOpen.isOpen && modalIsOpen.modal === 'room'} style={customStyles}>
-              <div className='modal-container'>
-                <img src={deleteSVGModal} alt='Icone de deletar' />
-                <h2>Encerrar sala</h2>
-                <p>Tem certeza que voce deseja encerrar esta sala ?</p>
-                <div>
-                  <Button
-                    type='button'
-                    className='button btn-cancelar'
+            <button
+              className='menu-mobile'
+              onClick={() => setModalIsOpen({ isOpen: true, modal: 'menu' })}
+            >
+              <img src={openMenuSVG} alt='Icone de abrir o menu' />
+            </button>
+            <Modal
+              isOpen={modalIsOpen.isOpen && modalIsOpen.modal === 'menu'}
+              style={{
+                content: {
+                  width: '100vw',
+                  inset: '0',
+                  height: 'fit-content',
+                  position: 'relative',
+                  padding: '24px',
+                },
+              }}
+            >
+              <div className='modal-menu'>
+                <div className='header'>
+                  <img src={logoSVG} alt='Letmeask' />
+                  <button
+                    className='close-modal'
                     onClick={() => setModalIsOpen({ isOpen: false, modal: '' })}
                   >
-                    Cancelar
-                  </Button>
-                  <Button type='button' className='button btn-encerrar' onClick={handleEndRoom}>
-                    Sim, encerrar
-                  </Button>
+                    <img src={closeMenuSVG} alt='Fechar menu' />
+                  </button>
                 </div>
+                <RoomCode code={roomId} />
+                <Button isOutlined onClick={() => setModalIsOpen({ isOpen: true, modal: 'room' })}>
+                  Encerrar sala
+                </Button>
               </div>
             </Modal>
           </div>
         </div>
       </header>
+      <Modal isOpen={modalIsOpen.isOpen && modalIsOpen.modal === 'room'} style={customStyles}>
+        <div className='modal-container'>
+          <img src={deleteSVGModal} alt='Icone de deletar' />
+          <h2>Encerrar sala</h2>
+          <p>Tem certeza que voce deseja encerrar esta sala ?</p>
+          <div>
+            <Button
+              type='button'
+              className='button btn-cancelar'
+              onClick={() => setModalIsOpen({ isOpen: false, modal: '' })}
+            >
+              Cancelar
+            </Button>
+            <Button type='button' className='button btn-encerrar' onClick={handleEndRoom}>
+              Sim, encerrar
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       <main>
         <div className='room-title'>

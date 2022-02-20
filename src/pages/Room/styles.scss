@@ -9,6 +9,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 50px;
 
       > img {
         max-height: 45px;
@@ -21,6 +22,30 @@
         button {
           height: 40px;
         }
+
+        .menu-mobile {
+          display: none;
+        }
+      }
+
+      @media (max-width: 600px) {
+        > div {
+          button {
+            display: none;
+          }
+
+          .menu-mobile {
+            background: transparent;
+            border: none;
+            display: block;
+            cursor: pointer;
+
+            img {
+              height: 30px;
+              width: 30px;
+            }
+          }
+        }
       }
     }
   }
@@ -28,6 +53,7 @@
   main {
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 16px;
 
     .room-title {
       margin: 32px 0 24px;
@@ -107,6 +133,37 @@
 
     .question-list {
       margin-top: 32px;
+    }
+  }
+}
+
+@media (max-width: 880px) {
+  #page-room {
+    main {
+      margin: 0 40px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  #page-room {
+    main {
+      margin: 0 20px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  #page-room {
+    header {
+
+      .content {
+        gap: 40px;
+      }
+    }
+
+    main {
+      margin: 0 5px;
     }
   }
 }

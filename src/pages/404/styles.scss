@@ -28,10 +28,26 @@
       p {
         opacity: 0.8;
         transition: opacity 0.2s;
+        font-size: 18px;
 
         &:hover {
           opacity: 1;
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 660px) {
+  #page-404 {
+    main {
+      flex-direction: column;
+      margin-top: 120px;
+      padding: 30px;
+      text-align: center;
+
+      h1 {
+        font-size: 28px;
       }
     }
   }
